@@ -1,0 +1,488 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Edtech Warm-Up</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout concept: the whole page is a browser window; each activity is a tab. B1 learners tap through four short tasks that all use edtech vocabulary. */
+:root {
+  --bg: #eef2f6;
+  --surface: #ffffff;
+  --ink: #0f1b2d;
+  --muted: #52627a;
+  --line: #d3dbe6;
+  --accent: #2f5bff;
+  --accent-ink: #ffffff;
+  --accent-soft: #e1e8ff;
+  --ok: #137a4b;
+  --ok-soft: #dcf3e6;
+  --bad: #b3261e;
+  --bad-soft: #fbe1de;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1220; --surface: #151d2e; --ink: #e8eefc; --muted: #9aa9c4; --line: #263248;
+    --accent: #7b9bff; --accent-ink: #0c1220; --accent-soft: #1e2a4d;
+    --ok: #55d394; --ok-soft: #123626; --bad: #ff8f86; --bad-soft: #3d1a18;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1220; --surface: #151d2e; --ink: #e8eefc; --muted: #9aa9c4; --line: #263248;
+  --accent: #7b9bff; --accent-ink: #0c1220; --accent-soft: #1e2a4d;
+  --ok: #55d394; --ok-soft: #123626; --bad: #ff8f86; --bad-soft: #3d1a18;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+
+header { display: flex; flex-direction: column; gap: 10px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 7vw, 56px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+header p { margin: 0; max-width: 56ch; color: var(--muted); font-size: 17px; }
+
+/* Browser window */
+.window { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px -18px rgba(15, 27, 45, 0.45); }
+.bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px 0; background: var(--bg); border-bottom: 1px solid var(--line); }
+.dots { display: flex; gap: 6px; padding-bottom: 10px; }
+.dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); display: block; }
+.tabs { display: flex; gap: 4px; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 8px;
+  padding: 9px 14px; border: 1px solid transparent; border-bottom: 0; border-radius: 9px 9px 0 0;
+  background: transparent; color: var(--muted); font-weight: 600; font-size: 14px; white-space: nowrap;
+}
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { background: var(--surface); color: var(--ink); border-color: var(--line); margin-bottom: -1px; padding-bottom: 10px; }
+.tab .badge { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.tab.done .badge { color: var(--ok); }
+
+.panel { padding: clamp(18px, 4vw, 32px); display: flex; flex-direction: column; gap: 20px; }
+.panel[hidden] { display: none !important; }
+.task { display: flex; flex-direction: column; gap: 4px; }
+.task h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(22px, 4vw, 28px); letter-spacing: -0.01em; margin: 0; }
+.task p { margin: 0; color: var(--muted); }
+
+.meter { font-family: var(--font-mono); font-size: 12px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; display: flex; justify-content: space-between; gap: 12px; }
+.track { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.track > span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.3s ease; }
+
+/* Match */
+.match { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; align-items: start; }
+.col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.chip {
+  text-align: left; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface);
+  line-height: 1.3; min-width: 0; overflow-wrap: anywhere;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+.chip:hover { border-color: var(--accent); }
+.chip.word { font-weight: 600; font-size: 17px; }
+.chip.def { font-size: 15px; }
+.chip.sel { border-color: var(--accent); background: var(--accent-soft); }
+.chip.ok { border-color: var(--ok); background: var(--ok-soft); color: var(--ok); pointer-events: none; }
+.chip.no { border-color: var(--bad); background: var(--bad-soft); animation: shake 0.35s; }
+
+/* Sort + gap cards */
+.stage { border: 1.5px dashed var(--line); border-radius: 12px; padding: clamp(20px, 5vw, 36px); display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; min-height: 200px; justify-content: center; }
+.bigword { font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 9vw, 60px); letter-spacing: -0.02em; line-height: 1.05; overflow-wrap: anywhere; }
+.sentence { font-family: var(--font-display); font-weight: 600; font-size: clamp(21px, 4.4vw, 28px); line-height: 1.3; text-wrap: balance; max-width: 30ch; }
+.blank { display: inline-block; min-width: 4.5ch; border-bottom: 3px solid var(--accent); padding: 0 6px; color: var(--accent); }
+.blank.filled { border-bottom-color: var(--ok); color: var(--ok); }
+.choices { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.btn {
+  padding: 11px 20px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); font-weight: 600;
+  transition: border-color 0.15s, background 0.15s;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn.ok { border-color: var(--ok); background: var(--ok-soft); color: var(--ok); }
+.btn.no { border-color: var(--bad); background: var(--bad-soft); color: var(--bad); animation: shake 0.35s; }
+.btn:disabled { opacity: 0.55; cursor: default; }
+.hint { min-height: 1.5em; margin: 0; font-size: 15px; color: var(--muted); }
+.hint.good { color: var(--ok); font-weight: 600; }
+.hint.bad { color: var(--bad); font-weight: 600; }
+.result { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.result .score { font-family: var(--font-display); font-weight: 800; font-size: clamp(48px, 12vw, 80px); line-height: 1; }
+.result .score small { font-size: 0.4em; color: var(--muted); font-weight: 600; }
+
+/* Talk */
+.prompt { font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 4.6vw, 32px); line-height: 1.25; max-width: 24ch; text-wrap: balance; }
+.keys { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.keys span { font-family: var(--font-mono); font-size: 13px; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.timer { font-family: var(--font-mono); font-size: 34px; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.timer.end { color: var(--bad); }
+.row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
+
+footer { font-size: 13px; color: var(--muted); }
+
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+@media (max-width: 460px) {
+  .match { gap: 8px 10px; }
+  .chip { padding: 10px; }
+  .chip.def { font-size: 14px; }
+  .dots { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Level B1 &middot; about 10 minutes</div>
+    <h1>Edtech Warm-Up</h1>
+    <p>Four quick tasks to wake up your English before class. Use the tabs in order, and work with a partner if you like.</p>
+  </header>
+
+  <main class="window">
+    <div class="bar">
+      <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="tabs" role="tablist" aria-label="Warm-up activities">
+        <button class="tab" role="tab" id="tab-match" aria-controls="p-match" aria-selected="true">Match <span class="badge" id="b-match">0/6</span></button>
+        <button class="tab" role="tab" id="tab-sort" aria-controls="p-sort" aria-selected="false">Sort <span class="badge" id="b-sort">0/12</span></button>
+        <button class="tab" role="tab" id="tab-gap" aria-controls="p-gap" aria-selected="false">Gap fill <span class="badge" id="b-gap">0/6</span></button>
+        <button class="tab" role="tab" id="tab-talk" aria-controls="p-talk" aria-selected="false">Talk <span class="badge" id="b-talk">2 min</span></button>
+      </div>
+    </div>
+
+    <section class="panel" id="p-match" role="tabpanel" aria-labelledby="tab-match">
+      <div class="task">
+        <h2>Match the word to its meaning</h2>
+        <p>Tap a word, then tap its meaning.</p>
+      </div>
+      <div class="track" aria-hidden="true"><span id="t-match"></span></div>
+      <div class="match" id="match-board"></div>
+      <p class="hint" id="match-hint" aria-live="polite"></p>
+      <div class="row" id="match-actions" hidden>
+        <button class="btn primary" data-go="sort">Next: Sort</button>
+      </div>
+    </section>
+
+    <section class="panel" id="p-sort" role="tabpanel" aria-labelledby="tab-sort" hidden>
+      <div class="task">
+        <h2>Sort the words</h2>
+        <p>Is it a device, an app or website, or an action?</p>
+      </div>
+      <div class="meter"><span id="sort-count">Word 1 of 12</span><span id="sort-mist"></span></div>
+      <div class="track" aria-hidden="true"><span id="t-sort"></span></div>
+      <div class="stage" id="sort-stage"></div>
+    </section>
+
+    <section class="panel" id="p-gap" role="tabpanel" aria-labelledby="tab-gap" hidden>
+      <div class="task">
+        <h2>Complete the sentence</h2>
+        <p>Choose the word that fits the gap.</p>
+      </div>
+      <div class="meter"><span id="gap-count">Sentence 1 of 6</span><span id="gap-mist"></span></div>
+      <div class="track" aria-hidden="true"><span id="t-gap"></span></div>
+      <div class="stage" id="gap-stage"></div>
+    </section>
+
+    <section class="panel" id="p-talk" role="tabpanel" aria-labelledby="tab-talk" hidden>
+      <div class="task">
+        <h2>Talk to your partner</h2>
+        <p>Ask and answer. Try to use the key words. Speak for two minutes.</p>
+      </div>
+      <div class="stage">
+        <div class="prompt" id="talk-prompt"></div>
+        <div class="keys" id="talk-keys"></div>
+        <div class="timer" id="timer" aria-live="off">2:00</div>
+        <div class="row">
+          <button class="btn primary" id="timer-btn">Start timer</button>
+          <button class="btn" id="next-q">New question</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Tip for teachers: project this page, or ask students to open the link on their phones.</footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  function shuffle(a) {
+    var arr = a.slice();
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  /* ---------- Tabs ---------- */
+  var tabs = ["match", "sort", "gap", "talk"];
+  function show(name) {
+    tabs.forEach(function (n) {
+      var on = n === name;
+      $("tab-" + n).setAttribute("aria-selected", on ? "true" : "false");
+      $("p-" + n).hidden = !on;
+    });
+  }
+  tabs.forEach(function (n) {
+    $("tab-" + n).addEventListener("click", function () { show(n); });
+  });
+  document.addEventListener("click", function (e) {
+    var g = e.target.closest && e.target.closest("[data-go]");
+    if (g) { show(g.getAttribute("data-go")); }
+  });
+  function markDone(n) { $("tab-" + n).classList.add("done"); }
+
+  /* ---------- 1. Match ---------- */
+  var matchData = [
+    { w: "download", d: "to copy a file from the internet to your device" },
+    { w: "password", d: "a secret word you type to open your account" },
+    { w: "platform", d: "a website where you find lessons and tasks" },
+    { w: "device", d: "a machine like a phone, tablet or laptop" },
+    { w: "attachment", d: "a file you add to an email" },
+    { w: "feedback", d: "comments that say what is good and what to improve" }
+  ];
+  var m = { w: null, d: null, done: 0, locked: false };
+
+  function buildMatch() {
+    m = { w: null, d: null, done: 0, locked: false };
+    var left = shuffle(matchData), right = shuffle(matchData);
+    var html = '<div class="col">' + left.map(function (x) {
+      return '<button class="chip word" data-side="w" data-id="' + esc(x.w) + '">' + esc(x.w) + '</button>';
+    }).join("") + '</div><div class="col">' + right.map(function (x) {
+      return '<button class="chip def" data-side="d" data-id="' + esc(x.w) + '">' + esc(x.d) + '</button>';
+    }).join("") + '</div>';
+    $("match-board").innerHTML = html;
+    $("match-hint").textContent = "";
+    $("match-actions").hidden = true;
+    $("b-match").textContent = "0/6";
+    $("t-match").style.width = "0";
+  }
+  $("match-board").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip");
+    if (!b || m.locked || b.classList.contains("ok")) return;
+    var side = b.getAttribute("data-side");
+    var prev = $("match-board").querySelector('.chip.sel[data-side="' + side + '"]');
+    if (prev) prev.classList.remove("sel");
+    b.classList.add("sel");
+    m[side] = b;
+    if (m.w && m.d) {
+      var a = m.w, c = m.d;
+      if (a.getAttribute("data-id") === c.getAttribute("data-id")) {
+        a.className = "chip word ok"; c.className = "chip def ok";
+        m.done++;
+        $("b-match").textContent = m.done + "/6";
+        $("t-match").style.width = (m.done / 6 * 100) + "%";
+        $("match-hint").className = "hint good";
+        $("match-hint").textContent = "Yes! " + a.textContent + " = " + c.textContent;
+        if (m.done === 6) {
+          $("match-hint").textContent = "All six matched. Well done!";
+          $("match-actions").hidden = false;
+          markDone("match");
+        }
+        m.w = null; m.d = null;
+      } else {
+        m.locked = true;
+        a.classList.add("no"); c.classList.add("no");
+        $("match-hint").className = "hint bad";
+        $("match-hint").textContent = "Not quite. Try again.";
+        setTimeout(function () {
+          a.classList.remove("no", "sel"); c.classList.remove("no", "sel");
+          m.w = null; m.d = null; m.locked = false;
+        }, 450);
+      }
+    }
+  });
+
+  /* ---------- 2. Sort ---------- */
+  var cats = ["Device", "App or website", "Action"];
+  var sortData = [
+    ["laptop", 0], ["tablet", 0], ["headphones", 0], ["interactive whiteboard", 0],
+    ["website", 1], ["app", 1], ["learning platform", 1], ["search engine", 1],
+    ["download", 2], ["upload", 2], ["log in", 2], ["share your screen", 2]
+  ];
+  var s = { items: [], i: 0, score: 0, slipped: false, locked: false, mist: 0 };
+
+  function buildSort() {
+    s = { items: shuffle(sortData), i: 0, score: 0, slipped: false, locked: false, mist: 0 };
+    drawSort();
+  }
+  function drawSort() {
+    var n = s.items.length;
+    $("b-sort").textContent = s.score + "/" + n;
+    $("t-sort").style.width = (s.i / n * 100) + "%";
+    $("sort-mist").textContent = s.mist ? s.mist + (s.mist === 1 ? " mistake" : " mistakes") : "";
+    if (s.i >= n) {
+      $("sort-count").textContent = "Finished";
+      $("sort-stage").innerHTML =
+        '<div class="result"><div class="score">' + s.score + '<small>/' + n + '</small></div>' +
+        '<p class="hint">' + (s.score === n ? "Perfect score on the first try!" : "That is how many you got right on the first try.") + '</p>' +
+        '<div class="row"><button class="btn" id="sort-again">Play again</button><button class="btn primary" data-go="gap">Next: Gap fill</button></div></div>';
+      $("sort-again").addEventListener("click", buildSort);
+      markDone("sort");
+      return;
+    }
+    $("sort-count").textContent = "Word " + (s.i + 1) + " of " + n;
+    $("sort-stage").innerHTML =
+      '<div class="bigword">' + esc(s.items[s.i][0]) + '</div>' +
+      '<div class="choices">' + cats.map(function (c, k) {
+        return '<button class="btn" data-cat="' + k + '">' + c + '</button>';
+      }).join("") + '</div><p class="hint" id="sort-hint" aria-live="polite"></p>';
+  }
+  $("sort-stage").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-cat]");
+    if (!b || s.locked) return;
+    var pick = +b.getAttribute("data-cat");
+    var item = s.items[s.i];
+    var hint = $("sort-hint");
+    if (pick === item[1]) {
+      s.locked = true;
+      b.classList.add("ok");
+      if (!s.slipped) s.score++;
+      hint.className = "hint good";
+      hint.textContent = "Correct! " + item[0] + " is " + (item[1] === 2 ? "an action." : "a " + cats[item[1]].toLowerCase() + ".");
+      setTimeout(function () { s.i++; s.slipped = false; s.locked = false; drawSort(); }, 800);
+    } else {
+      if (!s.slipped) { s.slipped = true; s.mist++; $("sort-mist").textContent = s.mist + (s.mist === 1 ? " mistake" : " mistakes"); }
+      b.classList.add("no");
+      setTimeout(function () { b.classList.remove("no"); }, 400);
+      hint.className = "hint bad";
+      hint.textContent = "Try another group.";
+    }
+  });
+
+  /* ---------- 3. Gap fill ---------- */
+  var gapData = [
+    { t: "I forgot my ___, so I could not log in.", a: "password", o: ["password", "attachment", "podcast"] },
+    { t: "Please ___ the worksheet from the class website.", a: "download", o: ["download", "scroll", "delete"] },
+    { t: "My teacher gave me useful ___ on my essay.", a: "feedback", o: ["feedback", "software", "headphones"] },
+    { t: "I study on my ___ because it is light and easy to carry.", a: "tablet", o: ["tablet", "server", "forum"] },
+    { t: "Our school uses an online ___ for lessons and tests.", a: "platform", o: ["platform", "keyboard", "battery"] },
+    { t: "The video kept stopping because the ___ was weak.", a: "Wi-Fi", o: ["Wi-Fi", "password", "screen"] }
+  ];
+  var g = { items: [], i: 0, score: 0, slipped: false, locked: false, mist: 0 };
+
+  function buildGap() {
+    g = { items: shuffle(gapData), i: 0, score: 0, slipped: false, locked: false, mist: 0 };
+    drawGap();
+  }
+  function sentenceHtml(t, fill) {
+    var parts = t.split("___");
+    var mid = fill ? '<span class="blank filled">' + esc(fill) + '</span>' : '<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+    return esc(parts[0]) + mid + esc(parts[1]);
+  }
+  function drawGap() {
+    var n = g.items.length;
+    $("b-gap").textContent = g.score + "/" + n;
+    $("t-gap").style.width = (g.i / n * 100) + "%";
+    $("gap-mist").textContent = g.mist ? g.mist + (g.mist === 1 ? " mistake" : " mistakes") : "";
+    if (g.i >= n) {
+      $("gap-count").textContent = "Finished";
+      $("gap-stage").innerHTML =
+        '<div class="result"><div class="score">' + g.score + '<small>/' + n + '</small></div>' +
+        '<p class="hint">' + (g.score === n ? "Perfect score on the first try!" : "That is how many you got right on the first try.") + '</p>' +
+        '<div class="row"><button class="btn" id="gap-again">Play again</button><button class="btn primary" data-go="talk">Next: Talk</button></div></div>';
+      $("gap-again").addEventListener("click", buildGap);
+      markDone("gap");
+      return;
+    }
+    var q = g.items[g.i];
+    $("gap-count").textContent = "Sentence " + (g.i + 1) + " of " + n;
+    $("gap-stage").innerHTML =
+      '<div class="sentence" id="gap-sentence">' + sentenceHtml(q.t) + '</div>' +
+      '<div class="choices">' + shuffle(q.o).map(function (o) {
+        return '<button class="btn" data-opt="' + esc(o) + '">' + esc(o) + '</button>';
+      }).join("") + '</div><p class="hint" id="gap-hint" aria-live="polite"></p>';
+  }
+  $("gap-stage").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-opt]");
+    if (!b || g.locked) return;
+    var q = g.items[g.i];
+    var hint = $("gap-hint");
+    if (b.getAttribute("data-opt") === q.a) {
+      g.locked = true;
+      b.classList.add("ok");
+      if (!g.slipped) g.score++;
+      $("gap-sentence").innerHTML = sentenceHtml(q.t, q.a);
+      hint.className = "hint good";
+      hint.textContent = "Correct!";
+      setTimeout(function () { g.i++; g.slipped = false; g.locked = false; drawGap(); }, 1100);
+    } else {
+      if (!g.slipped) { g.slipped = true; g.mist++; $("gap-mist").textContent = g.mist + (g.mist === 1 ? " mistake" : " mistakes"); }
+      b.classList.add("no");
+      b.disabled = true;
+      hint.className = "hint bad";
+      hint.textContent = "Not this one. Read the sentence again.";
+    }
+  });
+
+  /* ---------- 4. Talk ---------- */
+  var talkData = [
+    { q: "Which device do you use most for studying, and why?", k: ["laptop", "tablet", "phone", "screen"] },
+    { q: "Describe an app that helps you learn English.", k: ["app", "download", "free", "practise"] },
+    { q: "Do you prefer online classes or classroom lessons? Give two reasons.", k: ["online", "platform", "prefer", "because"] },
+    { q: "How should a teacher give feedback on homework?", k: ["feedback", "comments", "email", "attachment"] },
+    { q: "Have you ever had a problem with Wi-Fi in class? What happened?", k: ["Wi-Fi", "connection", "weak", "log in"] },
+    { q: "Is it a good idea to use phones in class? Why or why not?", k: ["device", "distract", "useful", "search"] },
+    { q: "What website do you visit every day? What do you do there?", k: ["website", "search", "watch", "share"] },
+    { q: "How can a teacher use videos in a lesson?", k: ["video", "screen", "interactive", "quiz"] }
+  ];
+  var order = shuffle(talkData), ti = 0;
+  var secs = 120, tick = null;
+
+  function drawTalk() {
+    var t = order[ti % order.length];
+    $("talk-prompt").textContent = t.q;
+    $("talk-keys").innerHTML = t.k.map(function (w) { return "<span>" + esc(w) + "</span>"; }).join("");
+  }
+  function fmt(n) { return Math.floor(n / 60) + ":" + String(n % 60).padStart(2, "0"); }
+  function resetTimer() {
+    clearInterval(tick); tick = null; secs = 120;
+    $("timer").textContent = fmt(secs);
+    $("timer").classList.remove("end");
+    $("timer-btn").textContent = "Start timer";
+  }
+  $("timer-btn").addEventListener("click", function () {
+    if (tick) { resetTimer(); return; }
+    $("timer-btn").textContent = "Reset";
+    $("timer").classList.remove("end");
+    $("timer").textContent = fmt(secs);
+    tick = setInterval(function () {
+      secs--;
+      $("timer").textContent = fmt(Math.max(secs, 0));
+      if (secs <= 0) {
+        clearInterval(tick); tick = null;
+        $("timer").textContent = "Time!";
+        $("timer").classList.add("end");
+        $("timer-btn").textContent = "Start again";
+        $("b-talk").textContent = "done";
+        markDone("talk");
+        secs = 120;
+      }
+    }, 1000);
+  });
+  $("next-q").addEventListener("click", function () { ti++; drawTalk(); resetTimer(); });
+
+  buildMatch(); buildSort(); buildGap(); drawTalk();
+})();
+</script>
+
+</body></html>
